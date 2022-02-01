@@ -25,6 +25,9 @@ const config = {
         ],
     },
     resolve: {
+        alias: {
+            vue: "vue/dist/vue.esm-bundler.js"
+        },
         extensions: ['.ts', '.js'],
     },
 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello, world!</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="grid" v-bind:style="gridCss">
+        <div 
+          v-for="tile in tiles"
+          class="tile"
+          :class="{fibo: tile.highlighted}"
+          @click="handleClick(tile.coordinate)"
+        >
+          <span v-if="tile.value > 0">{{ tile.value }}</span>
+        </div>
+      </div>
+    </div>
+    <script src="bundle.js"></script>
+  </body>
+</html>

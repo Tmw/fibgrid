@@ -1,41 +1,72 @@
-type Cell = number
-type Coordinate = { x: number; y: number };
+type Value = number
+
+interface Coordinate {
+  x: number;
+  y: number;
+}
 
 interface Grid {
-  width: number,
-  height: number,
-  cells: Cell[],
+  width: number;
+  height: number;
+  cells: Cell[];
 }
 
-const makeCells = (amount: number): Cell[] => 
-  Array(amount).fill(0)
-
-const makeGrid = (width: number, height: number): Grid => {
-  return { width, height, cells: makeCells(width * height) }
+interface Cell {
+  coordinate: Coordinate;
+  value: Value;
 }
 
-const advanceFromCoordinate = (grid: Grid, coordinate: Coordinate): Grid => {
-  let offsetInOrthogonalLine = (n: number): boolean => {
-    // in same row
-    if(Math.floor(n / grid.width) === coordinate.y) return true
-
-    // in same column
-    if(n % grid.width === coordinate.x) return true
-
-    return false
-  }
-
+const indexToCoordinate = (gridWidth: number, index: number): Coordinate => {
   return {
-    ...grid,
-    cells: grid.cells.map((value, offset) => 
-      offsetInOrthogonalLine(offset) ? value + 1: value
-    )
+    x: index % gridWidth,
+    y: Math.floor(index / gridWidth),
   }
 }
 
+const coordinateToIndex = (gridWidth: number) => ({x, y}: Coordinate): number =>
+  gridWidth * y + x
+
+const makeCells = (width: number, height: number, initialValues: Value[] | undefined = undefined): Cell[] => 
+  Array(width * height).fill(0).map((value, index) => ({
+    coordinate: indexToCoordinate(width, index),
+    value: initialValues ? initialValues[index] : value,
+  }))
+
+// Make a new grid, initialized width * height cells initialized with a zero value
+const makeGrid = (width: number, height: number, initialValues: number[] | undefined = undefined): Grid => {
+  return { 
+    width, 
+    height, 
+    cells: makeCells(width, height, initialValues) 
+  }
+}
+
+// Updates the cells in the given grid on the given coordinates using the given updater function
+type UpdaterFn = (c: Cell) => Value
+const update = (grid: Grid, coordinates: Coordinate[], fn: UpdaterFn): Grid => {
+  let indexes = coordinates.map(coordinateToIndex(grid.width))
+  const newGrid = {...grid}
+
+  for(let index of indexes) {
+    newGrid.cells[index].value = fn(newGrid.cells[index])
+  }
+
+  return newGrid
+}
+
+const isOrthogonallyInline = (origin: Coordinate, subject: Coordinate): boolean => 
+  origin.x == subject.x || origin.y == subject.y
+
+// Returns all the Coordinates orthogonally (horizontal / vertical)
+// connected to the given origin Coordinate.
+const orthogonallyConnected = (grid: Grid, origin: Coordinate): Coordinate[] =>
+    grid.cells
+        .filter(cell => isOrthogonallyInline(origin, cell.coordinate))
+        .map(cell => cell.coordinate)
 
 export { 
-  Cell, Grid, Coordinate, 
+  Cell, Grid, Coordinate, UpdaterFn, Value,
   makeGrid,
-  advanceFromCoordinate
+  orthogonallyConnected,
+  update
  };
