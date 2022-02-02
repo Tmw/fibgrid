@@ -1,27 +1,41 @@
-import { any, flatten, includes } from "ramda"
-import { Grid, Coordinate, Cell, makeGrid, update } from "./grid";
-import { advanceFromCoordinate, nullifyCell } from "./gridUtilities"
-import { horizontalFibonacciSequences } from "./horizontalFibonacciSequence"
+import { flatten, compose } from 'ramda';
+import {
+  Grid,
+  Coordinate,
+  makeGrid,
+  update,
+  orthogonallyConnected,
+} from './grid';
+import {
+  advanceFromCoordinate,
+  nullifyCell,
+  highlightFibonacci,
+  highlightReset,
+  highlightMutation,
+} from './gridUtilities';
+import { horizontalFibonacciSequences } from './horizontalFibonacciSequence';
 
-import { createApp } from "vue"
+import { createApp } from 'vue';
 
-interface State {
-  grid: Grid;
-  clickedHistory: number[];
-  fibonacci: Coordinate[][];
-  fibonacciResetTimerHandle: number | null;
+type HighlightState = {
+  mutated: Coordinate[];
+  fibonacci: Coordinate[];
 };
 
-interface Tile extends Cell {
-  highlighted: boolean
-}
+type State = {
+  grid: Grid;
+  fibonacciResetTimerHandle: number | null;
+  highlightState: HighlightState;
+};
 
-const size = 50
+const size = 50;
 const state: State = {
   grid: makeGrid(size, size),
-  clickedHistory: [],
-  fibonacci: [],
-  fibonacciResetTimerHandle: null
+  fibonacciResetTimerHandle: null,
+  highlightState: {
+    mutated: [],
+    fibonacci: [],
+  },
 };
 
 const App = createApp({
@@ -30,51 +44,57 @@ const App = createApp({
       ...state,
       gridCss: {
         gridTemplateColumns: `repeat(${state.grid.width}, 1fr)`,
-      }
-    }
+      },
+    };
   },
 
   methods: {
     handleClick(coordinate: Coordinate) {
-      if(coordinate !== null) {
-        this.grid = advanceFromCoordinate(this.grid, coordinate)
+      if (coordinate === null) return;
+
+      let advancedGrid = advanceFromCoordinate(this.grid, coordinate);
+
+      // Highlight ortogonally connected
+      const orthogonals = orthogonallyConnected(this.grid, coordinate);
+      advancedGrid = update(advancedGrid, orthogonals, highlightMutation);
+      this.highlightState.mutated =
+        this.highlightState.mutated.concat(orthogonals);
+
+      // Highlight fibonacci cells if any
+      const fibonacciCells = flatten(
+        horizontalFibonacciSequences(advancedGrid).filter(
+          (seq: Coordinate[]) => seq.length >= 5
+        )
+      );
+
+      this.highlightState.fibonacci =
+        this.highlightState.fibonacci.concat(fibonacciCells);
+
+      this.grid = update(advancedGrid, fibonacciCells, highlightFibonacci);
+
+      // TODO: Update the tests so the highlight functionality is covered too
+
+      // schedule a timer to reset any highlights
+      // if there's any previous handle, clear timer first
+      if (this.fibonacciResetTimerHandle !== null) {
+        clearTimeout(this.fibonacciResetTimerHandle);
       }
 
-      this.fibonacci = horizontalFibonacciSequences(this.grid)
-                        .filter((seq: Coordinate[]) => seq.length >= 5);
+      // then schedule a new timer
+      this.fibonacciResetTimerHandle = setTimeout(() => {
+        // un-highlight the "mutated" cells
+        const newGrid = update(
+          this.grid,
+          this.highlightState.mutated,
+          highlightReset
+        );
 
-      if(this.fibonacci.length > 0) {
-        // if there's any previous handle, clear timer first
-        if(this.fibonacciResetTimerHandle !== null) {
-          clearTimeout(this.fibonacciResetTimerHandle)
-        }
-
-        // then schedule a new timer
-        this.fibonacciResetTimerHandle = setTimeout(() => {
-          this.resetFibonacciSequences()
-        }, 1000)
-      }
-
-      // this.clickedHistory.push(coordinate)
+        // un-highlight and reset the fibonacci cells
+        const totalReset = compose(nullifyCell, highlightReset);
+        this.grid = update(newGrid, this.highlightState.fibonacci, totalReset);
+      }, 600);
     },
-
-    resetFibonacciSequences() {
-      this.grid = update(this.grid, flatten(this.fibonacci), nullifyCell)
-      this.fibonacci = []
-    }
   },
+});
 
-  computed: {
-    tiles(): Tile[] {
-      const isHighlighted = ({coordinate}: Cell): boolean =>
-        any(includes(coordinate), this.fibonacci)
-
-      return this.grid.cells.map( (cell: Cell) => ({
-        ...cell,
-        highlighted: isHighlighted(cell),
-      }))
-    }
-  }
-})
-
-App.mount('#app')
+App.mount('#app');
