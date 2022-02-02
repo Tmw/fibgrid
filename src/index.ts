@@ -72,8 +72,6 @@ const App = createApp({
 
       this.grid = update(advancedGrid, fibonacciCells, highlightFibonacci);
 
-      // TODO: Update the tests so the highlight functionality is covered too
-
       // schedule a timer to reset any highlights
       // if there's any previous handle, clear timer first
       if (this.fibonacciResetTimerHandle !== null) {

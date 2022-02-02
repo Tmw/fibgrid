@@ -1,7 +1,12 @@
 import { prop } from 'ramda';
 
-import { Grid, makeGrid } from '../src/grid';
-import { advanceFromCoordinate } from '../src/gridUtilities';
+import { Cell, Grid, Highlight, makeGrid } from '../src/grid';
+import {
+  advanceFromCoordinate,
+  highlightMutation,
+  highlightFibonacci,
+  highlightReset,
+} from '../src/gridUtilities';
 
 describe(advanceFromCoordinate, () => {
   let grid: Grid;
@@ -14,5 +19,28 @@ describe(advanceFromCoordinate, () => {
     ];
 
     expect(updatedGrid.cells.map(prop('value'))).toStrictEqual(expectedValues);
+  });
+});
+
+describe('updating cell highlights', () => {
+  const makeCell = (highlight: Highlight): Cell => ({
+    coordinate: { x: 0, y: 0 },
+    value: 12,
+    highlight: highlight,
+  });
+
+  test('mutation highlight', () => {
+    const cell = makeCell('none');
+    expect(highlightMutation(cell)).toHaveProperty('highlight', 'mutation');
+  });
+
+  test('fibonacci highlight', () => {
+    const cell = makeCell('none');
+    expect(highlightFibonacci(cell)).toHaveProperty('highlight', 'fibonacci');
+  });
+
+  test('reset highlight', () => {
+    const cell = makeCell('fibonacci');
+    expect(highlightReset(cell)).toHaveProperty('highlight', 'none');
   });
 });
