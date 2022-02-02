@@ -1,6 +1,34 @@
 # Fibgrid
 
-T.B.D
+**Clone**
+
+```bash
+git clone git@github.com:Tmw/fibgrid.git && cd fibgrid
+```
+
+**Dependencies**
+
+```bash
+npm i
+```
+
+**Test**
+
+```bash
+npm run test
+```
+
+**Lint**
+
+```bash
+npm run lint
+```
+
+**Serve**
+
+```bash
+npm run serve
+```
 
 ## Objective
 
