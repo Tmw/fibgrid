@@ -22,6 +22,12 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
 
   // try to pluck fibonacci sequences per line
   let fibonacciCoordinates: Coordinate[] = [];
+  const pushSequence = (sequence: Coordinate[]) => {
+    if (sequence.length >= MIN_SEQUENCE_LENGTH) {
+      fibonacciCoordinates = fibonacciCoordinates.concat(sequence);
+    }
+  };
+
   for (const line of lines) {
     const pairs = zip(drop(1, line), line);
 
@@ -31,7 +37,7 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
         continue;
       if (next.value < 1 || curr.value < 1) continue;
 
-      // Only if the fibonacci indexes are consecutive.
+      // check if the fibonacci indexes are increasing by one
       if (next.fibonacciIndex - curr.fibonacciIndex === 1) {
         // starting a new sequence with current coordinate
         if (currentSequence.length === 0) {
@@ -41,16 +47,13 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
         // push the `next` coordinate too
         currentSequence.push(next.coordinate);
       } else {
-        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
-          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
-          currentSequence = [];
-        }
+        // breaking the consecutive series means pushing the
+        pushSequence(currentSequence);
+        currentSequence = [];
       }
     }
 
-    if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
-      fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
-    }
+    pushSequence(currentSequence);
   }
 
   return fibonacciCoordinates;

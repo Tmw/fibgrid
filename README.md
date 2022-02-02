@@ -17,3 +17,4 @@ Create a grid of 50x50. When you click on a cell, all values in the cells in the
 ## Possible improvements
 
 - The function that checks for horizontal fibonacci sequences checks the whole grid on every click; we can speed this up by only checking the row/column intersection. However; currently this logic runs in ~15ms on my machine.
+- Clean up the `horizontalFibonacciSequence` module a bit more.
