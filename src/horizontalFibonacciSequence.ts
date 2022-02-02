@@ -1,29 +1,27 @@
+import { drop, zip, splitEvery } from 'ramda';
+
 import { Cell, Grid, Coordinate } from './grid';
-import { drop, zip } from 'ramda';
 import { fibonacciIndex } from './fibonacci';
 
 type FibonacciCandidate = Cell & {
   fibonacciIndex: number | null;
 };
+const MIN_SEQUENCE_LENGTH = 5;
 
-// Given a current grid status, it will return a list coordinate lists (sequences)
-// that form an increasing (left-to-right) fibonacci sequence.
-// TODO: Clean up the implementation of this function.
-const horizontalFibonacciSequences = (grid: Grid): Coordinate[][] => {
+// Given a current grid status, it will return a list coordinates that are part of
+// a fibonacci sequence of at least 5 cells.
+const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
   // assign an optional fibonacci index to each cell
   const candidates = grid.cells.map<FibonacciCandidate>((cell) => ({
     ...cell,
     fibonacciIndex: fibonacciIndex(cell.value),
   }));
 
-  // split the grid in rows (detecting rows only for now)
-  const lines = [];
-  for (let i = 0; i < grid.height; i++) {
-    lines.push(candidates.splice(0, grid.width));
-  }
+  // split the grid in rows
+  const lines = splitEvery(grid.width, candidates);
 
   // try to pluck fibonacci sequences per line
-  const fibonacciCoordinates = [];
+  let fibonacciCoordinates: Coordinate[] = [];
   for (const line of lines) {
     const pairs = zip(drop(1, line), line);
 
@@ -33,7 +31,7 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[][] => {
         continue;
       if (next.value < 1 || curr.value < 1) continue;
 
-      // Only if the fibonacci indexes are consecutive..
+      // Only if the fibonacci indexes are consecutive.
       if (next.fibonacciIndex - curr.fibonacciIndex === 1) {
         // starting a new sequence with current coordinate
         if (currentSequence.length === 0) {
@@ -43,15 +41,15 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[][] => {
         // push the `next` coordinate too
         currentSequence.push(next.coordinate);
       } else {
-        if (currentSequence.length > 0) {
-          fibonacciCoordinates.push(currentSequence);
+        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
+          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
           currentSequence = [];
         }
       }
     }
 
-    if (currentSequence.length > 0) {
-      fibonacciCoordinates.push(currentSequence);
+    if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
+      fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
     }
   }
 

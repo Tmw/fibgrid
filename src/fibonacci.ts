@@ -4,24 +4,22 @@ const isSquare = (n: number): boolean =>
 const isFibonacciNumber = (n: number): boolean =>
   isSquare(5 * n * n + 4) || isSquare(5 * n * n - 4);
 
-// find the index of the given number in the fibonacci sequence.
+function* fibGen(a = 0, b = 1) {
+  while (a + b < Infinity) {
+    const oldA = a;
+    a = b;
+    b = oldA + b;
+    yield b;
+  }
+}
 
-// TODO(refactor): Can we use an es6 generator function for this?
+// find the index of the given number in the fibonacci sequence.
 const fibonacciIndex = (n: number): number | null => {
   if (!isFibonacciNumber(n)) return null;
   if (n <= 1) return n;
-
-  let partA = 0;
-  let partB = 1;
+  const fib = fibGen();
   let index = 0;
-
-  // work our way through the fibonacci sequence from the beginning
-  // until we hit the given number, keeping track of the index.
-  // this can be improved by looking at the ratio between the numbers instead.
-  while (partA + partB <= n) {
-    const oldPartB = partB;
-    partB = partA + oldPartB;
-    partA = oldPartB;
+  while (fib.next().value <= n) {
     index++;
   }
 

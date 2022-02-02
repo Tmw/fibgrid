@@ -1,4 +1,4 @@
-import { flatten, compose } from 'ramda';
+import { compose } from 'ramda';
 import {
   Grid,
   Coordinate,
@@ -61,11 +61,7 @@ const App = createApp({
         this.highlightState.mutated.concat(orthogonals);
 
       // Highlight fibonacci cells if any
-      const fibonacciCells = flatten(
-        horizontalFibonacciSequences(advancedGrid).filter(
-          (seq: Coordinate[]) => seq.length >= 5
-        )
-      );
+      const fibonacciCells = horizontalFibonacciSequences(advancedGrid);
 
       this.highlightState.fibonacci =
         this.highlightState.fibonacci.concat(fibonacciCells);

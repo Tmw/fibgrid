@@ -13,13 +13,11 @@ describe(horizontalFibonacciSequences, () => {
     );
 
     const expected = [
-      [
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 5, y: 0 },
-      ],
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
     ];
 
     expect(horizontalFibonacciSequences(grid)).toStrictEqual(expected);
@@ -40,20 +38,16 @@ describe(horizontalFibonacciSequences, () => {
     );
 
     const expected = [
-      [
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 5, y: 0 },
-      ],
-      [
-        { x: 6, y: 0 },
-        { x: 7, y: 0 },
-        { x: 8, y: 0 },
-        { x: 9, y: 0 },
-        { x: 10, y: 0 },
-      ],
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
+      { x: 6, y: 0 },
+      { x: 7, y: 0 },
+      { x: 8, y: 0 },
+      { x: 9, y: 0 },
+      { x: 10, y: 0 },
     ];
 
     // the found sequence should be the top row
@@ -72,27 +66,21 @@ describe(horizontalFibonacciSequences, () => {
     );
 
     const expected = [
-      [
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 5, y: 0 },
-      ],
-      [
-        { x: 2, y: 2 },
-        { x: 3, y: 2 },
-        { x: 4, y: 2 },
-        { x: 5, y: 2 },
-        { x: 6, y: 2 },
-      ],
-      [
-        { x: 3, y: 6 },
-        { x: 4, y: 6 },
-        { x: 5, y: 6 },
-        { x: 6, y: 6 },
-        { x: 7, y: 6 },
-      ],
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
+      { x: 2, y: 2 },
+      { x: 3, y: 2 },
+      { x: 4, y: 2 },
+      { x: 5, y: 2 },
+      { x: 6, y: 2 },
+      { x: 3, y: 6 },
+      { x: 4, y: 6 },
+      { x: 5, y: 6 },
+      { x: 6, y: 6 },
+      { x: 7, y: 6 },
     ];
 
     // the found sequence should be the top row
@@ -111,13 +99,11 @@ describe(horizontalFibonacciSequences, () => {
     );
 
     const expected = [
-      [
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 5, y: 0 },
-      ],
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
     ];
 
     expect(horizontalFibonacciSequences(grid)).toStrictEqual(expected);
