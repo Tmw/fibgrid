@@ -1,7 +1,7 @@
 import { makeGrid } from '../src/grid';
-import { horizontalFibonacciSequences } from '../src/horizontalFibonacciSequence';
+import { detector } from '../src/fibonacciDetectors/horizontalDetector';
 
-describe(horizontalFibonacciSequences, () => {
+describe(detector, () => {
   test('detects a single fibonacci sequence in rows', () => {
     const grid = makeGrid(
       6,
@@ -20,7 +20,7 @@ describe(horizontalFibonacciSequences, () => {
       { x: 5, y: 0 },
     ];
 
-    expect(horizontalFibonacciSequences(grid)).toStrictEqual(expected);
+    expect(detector(grid)).toStrictEqual(expected);
   });
 
   test('detects multiple fibonacci sequences on a single row', () => {
@@ -51,7 +51,7 @@ describe(horizontalFibonacciSequences, () => {
     ];
 
     // the found sequence should be the top row
-    expect(horizontalFibonacciSequences(grid)).toStrictEqual(expected);
+    expect(detector(grid)).toStrictEqual(expected);
   });
 
   test('detects multiple fibonacci sequences across multiple rows', () => {
@@ -84,7 +84,7 @@ describe(horizontalFibonacciSequences, () => {
     ];
 
     // the found sequence should be the top row
-    expect(horizontalFibonacciSequences(grid)).toStrictEqual(expected);
+    expect(detector(grid)).toStrictEqual(expected);
   });
 
   test('detects fibonacci sequences not starting with 1', () => {
@@ -106,6 +106,6 @@ describe(horizontalFibonacciSequences, () => {
       { x: 5, y: 0 },
     ];
 
-    expect(horizontalFibonacciSequences(grid)).toStrictEqual(expected);
+    expect(detector(grid)).toStrictEqual(expected);
   });
 });

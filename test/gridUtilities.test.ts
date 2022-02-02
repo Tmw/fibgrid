@@ -6,7 +6,7 @@ import {
   highlightMutation,
   highlightFibonacci,
   highlightReset,
-} from '../src/gridUtilities';
+} from '../src/grid/utilities';
 
 describe(advanceFromCoordinate, () => {
   let grid: Grid;

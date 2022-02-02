@@ -1,7 +1,7 @@
 import { drop, zip, splitEvery } from 'ramda';
 
-import { Cell, Grid, Coordinate } from './grid';
-import { fibonacciIndex } from './fibonacci';
+import { Cell, Grid, Coordinate } from '../grid/grid';
+import { fibonacciIndex } from '../fibonacci';
 
 type FibonacciCandidate = Cell & {
   fibonacciIndex: number | null;
@@ -10,7 +10,7 @@ const MIN_SEQUENCE_LENGTH = 5;
 
 // Given a current grid status, it will return a list coordinates that are part of
 // a fibonacci sequence of at least 5 cells.
-const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
+const detector = (grid: Grid): Coordinate[] => {
   // assign an optional fibonacci index to each cell
   const candidates = grid.cells.map<FibonacciCandidate>((cell) => ({
     ...cell,
@@ -22,12 +22,6 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
 
   // try to pluck fibonacci sequences per line
   let fibonacciCoordinates: Coordinate[] = [];
-  const pushSequence = (sequence: Coordinate[]) => {
-    if (sequence.length >= MIN_SEQUENCE_LENGTH) {
-      fibonacciCoordinates = fibonacciCoordinates.concat(sequence);
-    }
-  };
-
   for (const line of lines) {
     const pairs = zip(drop(1, line), line);
 
@@ -47,16 +41,21 @@ const horizontalFibonacciSequences = (grid: Grid): Coordinate[] => {
         // push the `next` coordinate too
         currentSequence.push(next.coordinate);
       } else {
-        // breaking the consecutive series means pushing the
-        pushSequence(currentSequence);
+        // as soon as the fibonacciIndex are not consecutive anymore, push
+        // the sub sequence to the list of fibonacciCoordinates.
+        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
+          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
+        }
         currentSequence = [];
       }
     }
 
-    pushSequence(currentSequence);
+    if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
+      fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
+    }
   }
 
   return fibonacciCoordinates;
 };
 
-export { horizontalFibonacciSequences };
+export { detector };

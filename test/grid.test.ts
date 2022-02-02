@@ -6,7 +6,7 @@ import {
   update,
 } from '../src/grid';
 
-import { setCellValue } from '../src/gridUtilities';
+import { setCellValue } from '../src/grid/utilities';
 
 describe(makeGrid, () => {
   test('initializes a new grid with correct number of cells', () => {
