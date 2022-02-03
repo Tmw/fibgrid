@@ -46,3 +46,4 @@ Create a grid of 50x50. When you click on a cell, all values in the cells in the
 
 - The function that checks for horizontal fibonacci sequences checks the whole grid on every click; we can speed this up by only checking the row/column intersection. However; currently this logic runs in ~15ms on my machine.
 - Clean up the `horizontalFibonacciSequence` module a bit more.
+- After studying and learning about vue a bit more; decided to rewrite parts in a more mutable style and refactor logical components in different 'hooks' => see https://github.com/Tmw/fibgrid/pull/1
