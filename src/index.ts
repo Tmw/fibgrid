@@ -1,79 +1,46 @@
-import { compose } from 'ramda';
-import {
-  Coordinate,
-  makeGrid,
-  update,
-  orthogonallyConnected,
-} from './grid/grid';
+import { createApp } from 'vue';
 
-import {
-  advanceFromCoordinate,
-  nullifyCell,
-  highlightFibonacci,
-  highlightReset,
-  highlightMutation,
-} from './grid/utilities';
-
-import { detector } from './fibonacciDetectors/horizontalDetector';
-import { createApp, ref } from 'vue';
-
-type HighlightState = {
-  mutated: Coordinate[];
-  fibonacci: Coordinate[];
-};
+import { useGrid, useFibonacciDetector, useHighlight, useDelay } from './use';
+import { Coordinate } from './grid/grid';
+import { nullifyCell } from './grid/utilities';
 
 const GRID_SIZE = 50;
 const App = createApp({
   setup() {
-    const grid = ref(makeGrid(GRID_SIZE, GRID_SIZE));
+    const { grid, advance } = useGrid(GRID_SIZE);
+    const fibonacciCells = new Set<Coordinate>();
 
-    const highlightState: HighlightState = {
-      mutated: [],
-      fibonacci: [],
-    };
+    const { runDetector } = useFibonacciDetector(
+      grid,
+      (coordinates: Coordinate[]) => {
+        coordinates.forEach((c) => fibonacciCells.add(c));
+        setFibonacciHighlight(coordinates);
+      }
+    );
 
-    let highlightResetTimer: number | null = null;
+    const { setMutationHighlight, setFibonacciHighlight, clearHighlights } =
+      useHighlight(grid);
+
+    const { postpone } = useDelay(600, () => {
+      // clear highlighted cells
+      clearHighlights();
+
+      // nullify fibonacci cells
+      grid.update(Array.from(fibonacciCells), nullifyCell);
+      fibonacciCells.clear();
+    });
 
     const handleClick = (coordinate: Coordinate) => {
-      grid.value = advanceFromCoordinate(grid.value, coordinate);
-
-      // Highlight ortogonally connected
-      const orthogonals = orthogonallyConnected(grid.value, coordinate);
-      grid.value = update(grid.value, orthogonals, highlightMutation);
-      highlightState.mutated = highlightState.mutated.concat(orthogonals);
-
-      // Highlight fibonacci cells if any
-      const fibonacciCells = detector(grid.value);
-      highlightState.fibonacci =
-        highlightState.fibonacci.concat(fibonacciCells);
-
-      grid.value = update(grid.value, fibonacciCells, highlightFibonacci);
-
-      // schedule a timer to reset any highlights
-      // if there's any previous handle, clear timer first
-      if (highlightResetTimer !== null) {
-        clearTimeout(highlightResetTimer);
-      }
-
-      // then schedule a new timer
-      highlightResetTimer = window.setTimeout(() => {
-        // un-highlight the "mutated" cells
-        const newGrid = update(
-          grid.value,
-          highlightState.mutated,
-          highlightReset
-        );
-
-        // un-highlight and reset the fibonacci cells
-        const totalReset = compose(nullifyCell, highlightReset);
-        grid.value = update(newGrid, highlightState.fibonacci, totalReset);
-      }, 600);
+      advance(coordinate);
+      setMutationHighlight(grid.orthogonallyConnected(coordinate));
+      runDetector();
+      postpone();
     };
 
     return {
       grid,
-      gridCss: { gridTemplateColumns: `repeat(${grid.value.width}, 1fr)` },
-      handleClick: handleClick,
+      gridCss: { gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)` },
+      handleClick,
     };
   },
 });

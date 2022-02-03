@@ -1,43 +1,26 @@
-import {
-  Coordinate,
-  Grid,
-  update,
-  Cell,
-  orthogonallyConnected,
-  Value,
-  Highlight,
-} from './grid';
+import { Coordinate, Grid, Cell, Value, Highlight } from './grid';
 
-const advanceCell = (cell: Cell): Cell => ({ ...cell, value: cell.value + 1 });
+export const advanceCell = (cell: Cell): Cell => ({
+  ...cell,
+  value: cell.value + 1,
+});
 
-const setCellValue =
+export const setCellValue =
   (newValue: Value) =>
   (cell: Cell): Cell => ({ ...cell, value: newValue });
 
-const nullifyCell = setCellValue(0);
+export const nullifyCell = setCellValue(0);
 
-const setCellHighlight = (highlight: Highlight) => (cell: Cell) => ({
+export const setCellHighlight = (highlight: Highlight) => (cell: Cell) => ({
   ...cell,
   highlight: highlight,
 });
 
-const highlightMutation = setCellHighlight('mutation');
-const highlightReset = setCellHighlight('none');
-const highlightFibonacci = setCellHighlight('fibonacci');
+export const highlightMutation = setCellHighlight('mutation');
+export const highlightReset = setCellHighlight('none');
+export const highlightFibonacci = setCellHighlight('fibonacci');
 
-const advanceFromCoordinate = (grid: Grid, origin: Coordinate): Grid => {
-  const connected = orthogonallyConnected(grid, origin);
-  return update(grid, connected, advanceCell);
-};
-
-export {
-  advanceFromCoordinate,
-  orthogonallyConnected,
-  advanceCell,
-  nullifyCell,
-  setCellValue,
-  setCellHighlight,
-  highlightMutation,
-  highlightFibonacci,
-  highlightReset,
+export const advanceFromCoordinate = (grid: Grid, origin: Coordinate) => {
+  const connected = grid.orthogonallyConnected(origin);
+  grid.update(connected, advanceCell);
 };
