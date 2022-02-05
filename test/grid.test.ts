@@ -18,9 +18,13 @@ describe(FibGrid, () => {
     });
 
     test('initializes the grid with initial values', () => {
+      // prettier-ignore
       const initialValues = [
-        1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4,
-        5,
+        1, 2, 3, 4, 5, 
+        1, 2, 3, 4, 5, 
+        1, 2, 3, 4, 5, 
+        1, 2, 3, 4, 5, 
+        1, 2, 3, 4, 5,
       ];
 
       const grid = new FibGrid(5, 5, initialValues);
@@ -59,10 +63,16 @@ describe(FibGrid, () => {
       grid.update(coordinates, setCellValue(8));
 
       const updatedValues = grid.cells.map(prop('value'));
+
+      // prettier-ignore
       const expectedValues = [
-        0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0,
-        0,
+        0, 0, 0, 0, 0, 
+        0, 0, 8, 0, 0, 
+        0, 0, 8, 0, 0, 
+        0, 0, 8, 0, 0, 
+        0, 0, 0, 0, 0,
       ];
+
       expect(updatedValues).toStrictEqual(expectedValues);
     });
   });

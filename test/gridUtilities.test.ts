@@ -14,8 +14,14 @@ describe(advanceFromCoordinate, () => {
 
   test('increments orthogonally from coordinate', () => {
     advanceFromCoordinate(grid, { x: 1, y: 2 });
+
+    // prettier-ignore
     const expectedValues = [
-      0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+      0, 1, 0, 0, 0, 
+      0, 1, 0, 0, 0, 
+      1, 1, 1, 1, 1, 
+      0, 1, 0, 0, 0, 
+      0, 1, 0, 0, 0,
     ];
 
     expect(grid.cells.map(prop('value'))).toStrictEqual(expectedValues);
