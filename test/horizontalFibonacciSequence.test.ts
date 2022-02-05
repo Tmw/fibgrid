@@ -1,16 +1,14 @@
-import { makeGrid } from '../src/grid';
+import { FibGrid } from '../src/grid';
 import { detector } from '../src/fibonacciDetectors/horizontalDetector';
 
 describe(detector, () => {
   test('detects a single fibonacci sequence in rows', () => {
-    const grid = makeGrid(
-      6,
-      6,
-      [
-        0, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      ]
-    );
+    const initialValues = [
+      0, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+
+    const grid = new FibGrid(6, 6, initialValues);
 
     const expected = [
       { x: 1, y: 0 },
@@ -24,18 +22,16 @@ describe(detector, () => {
   });
 
   test('detects multiple fibonacci sequences on a single row', () => {
-    const grid = makeGrid(
-      12,
-      12,
-      [
-        0, 1, 2, 3, 5, 8, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      ]
-    );
+    const initialValues = [
+      0, 1, 2, 3, 5, 8, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+
+    const grid = new FibGrid(12, 12, initialValues);
 
     const expected = [
       { x: 1, y: 0 },
@@ -55,15 +51,12 @@ describe(detector, () => {
   });
 
   test('detects multiple fibonacci sequences across multiple rows', () => {
-    const grid = makeGrid(
-      8,
-      8,
-      [
-        0, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 5, 8, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0,
-      ]
-    );
+    const initialValues = [
+      0, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 5, 8, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 2, 3, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    const grid = new FibGrid(8, 8, initialValues);
 
     const expected = [
       { x: 1, y: 0 },
@@ -88,15 +81,12 @@ describe(detector, () => {
   });
 
   test('detects fibonacci sequences not starting with 1', () => {
-    const grid = makeGrid(
-      8,
-      8,
-      [
-        0, 3, 5, 8, 13, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      ]
-    );
+    const initialValues = [
+      0, 3, 5, 8, 13, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    const grid = new FibGrid(8, 8, initialValues);
 
     const expected = [
       { x: 1, y: 0 },
