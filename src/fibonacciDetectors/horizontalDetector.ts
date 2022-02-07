@@ -26,10 +26,24 @@ const detector = (grid: Grid): Coordinate[] => {
     const pairs = zip(drop(1, line), line);
 
     let currentSequence = [];
+
     for (const [next, curr] of pairs) {
-      if (next.fibonacciIndex === null || curr.fibonacciIndex === null)
+      if (next.fibonacciIndex === null || curr.fibonacciIndex === null) {
+        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
+          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
+        }
+        currentSequence = [];
         continue;
-      if (next.value < 1 || curr.value < 1) continue;
+      }
+
+      if (next.value < 1 || curr.value < 1) {
+        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
+          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
+        }
+
+        currentSequence = [];
+        continue;
+      }
 
       // check if the fibonacci indexes are increasing by one
       if (next.fibonacciIndex - curr.fibonacciIndex === 1) {

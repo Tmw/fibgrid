@@ -124,4 +124,20 @@ describe(detector, () => {
 
     expect(detector(grid)).toStrictEqual(expected);
   });
+
+  test('only detects consecutive sequences of 5 or longer', () => {
+    // prettier-ignore
+    const initialValues = [
+      1, 2, 3, 0, 5, 8, 13,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+    ];
+
+    const grid = new FibGrid(7, 7, initialValues);
+
+    expect(detector(grid)).toHaveLength(0);
+  });
 });
