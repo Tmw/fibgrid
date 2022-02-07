@@ -140,4 +140,20 @@ describe(detector, () => {
 
     expect(detector(grid)).toHaveLength(0);
   });
+
+  test('detects reverse fibonacci sequences', () => {
+    // prettier-ignore
+    const initialValues = [
+      8, 5, 3, 2, 1, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+    ];
+
+    const grid = new FibGrid(7, 7, initialValues);
+
+    expect(detector(grid)).toHaveLength(5);
+  });
 });

@@ -46,7 +46,7 @@ const detector = (grid: Grid): Coordinate[] => {
       }
 
       // check if the fibonacci indexes are increasing by one
-      if (next.fibonacciIndex - curr.fibonacciIndex === 1) {
+      if (Math.abs(next.fibonacciIndex - curr.fibonacciIndex) === 1) {
         // starting a new sequence with current coordinate
         if (currentSequence.length === 0) {
           currentSequence.push(curr.coordinate);
