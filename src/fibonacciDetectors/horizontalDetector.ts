@@ -1,19 +1,42 @@
-import { drop, zip, splitEvery } from 'ramda';
-
+import { splitEvery, groupWith, flatten, isNil, uniq, pluck } from 'ramda';
 import { Cell, Grid, Coordinate } from '../grid/grid';
 import { fibonacciIndex } from '../fibonacci';
 
-type FibonacciCandidate = Cell & {
+type FibonacciCandidate = {
+  cell: Cell;
   fibonacciIndex: number | null;
 };
-const MIN_SEQUENCE_LENGTH = 5;
+
+// when two cells have an increasing or decreasing fibonacci index value
+// they are considered fibonacci neighbours.
+function areFibonacciNeighbours(
+  a: FibonacciCandidate,
+  b: FibonacciCandidate
+): boolean {
+  if (isNil(a.fibonacciIndex) || isNil(b.fibonacciIndex)) {
+    return false;
+  }
+
+  if (a.cell.value <= 0 || b.cell.value <= 0) {
+    return false;
+  }
+
+  return Math.abs(a.fibonacciIndex - b.fibonacciIndex) === 1;
+}
+
+// a valid sequence consists of 5 or more unique fibonacci members
+const validSequence =
+  (minimumLength: number) =>
+  (s: FibonacciCandidate[]): boolean => {
+    return uniq(pluck('fibonacciIndex', s)).length >= minimumLength;
+  };
 
 // Given a current grid status, it will return a list coordinates that are part of
 // a fibonacci sequence of at least 5 cells.
-const detector = (grid: Grid): Coordinate[] => {
+export function detector(grid: Grid, minimumLength = 5): Coordinate[] {
   // assign an optional fibonacci index to each cell
   const candidates = grid.cells.map<FibonacciCandidate>((cell) => ({
-    ...cell,
+    cell,
     fibonacciIndex: fibonacciIndex(cell.value),
   }));
 
@@ -21,55 +44,12 @@ const detector = (grid: Grid): Coordinate[] => {
   const lines = splitEvery(grid.width, candidates);
 
   // try to pluck fibonacci sequences per line
-  let fibonacciCoordinates: Coordinate[] = [];
-  for (const line of lines) {
-    const pairs = zip(drop(1, line), line);
-
-    let currentSequence = [];
-
-    for (const [next, curr] of pairs) {
-      if (next.fibonacciIndex === null || curr.fibonacciIndex === null) {
-        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
-          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
-        }
-        currentSequence = [];
-        continue;
-      }
-
-      if (next.value < 1 || curr.value < 1) {
-        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
-          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
-        }
-
-        currentSequence = [];
-        continue;
-      }
-
-      // check if the fibonacci indexes are increasing by one
-      if (Math.abs(next.fibonacciIndex - curr.fibonacciIndex) === 1) {
-        // starting a new sequence with current coordinate
-        if (currentSequence.length === 0) {
-          currentSequence.push(curr.coordinate);
-        }
-
-        // push the `next` coordinate too
-        currentSequence.push(next.coordinate);
-      } else {
-        // as soon as the fibonacciIndex are not consecutive anymore, push
-        // the sub sequence to the list of fibonacciCoordinates.
-        if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
-          fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
-        }
-        currentSequence = [];
-      }
+  const fibonacciCoordinates = lines.flatMap<FibonacciCandidate>(
+    (line): FibonacciCandidate[] => {
+      const sequenceCandidates = groupWith(areFibonacciNeighbours, line);
+      return flatten(sequenceCandidates.filter(validSequence(minimumLength)));
     }
+  );
 
-    if (currentSequence.length >= MIN_SEQUENCE_LENGTH) {
-      fibonacciCoordinates = fibonacciCoordinates.concat(currentSequence);
-    }
-  }
-
-  return fibonacciCoordinates;
-};
-
-export { detector };
+  return fibonacciCoordinates.map((c) => c.cell.coordinate);
+}

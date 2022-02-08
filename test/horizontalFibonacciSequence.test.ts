@@ -156,4 +156,19 @@ describe(detector, () => {
 
     expect(detector(grid)).toHaveLength(5);
   });
+
+  test('only detects fibonacci when full sequence is either increasing or decreasing', () => {
+    // prettier-ignore
+    const initialValues = [
+      1, 2, 3, 5, 3, 
+      0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 
+      0, 0, 0, 0, 0, 
+    ];
+
+    const grid = new FibGrid(5, 5, initialValues);
+
+    expect(detector(grid)).toHaveLength(0);
+  });
 });
