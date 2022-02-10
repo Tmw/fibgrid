@@ -1,6 +1,6 @@
 import { prop, repeat } from 'ramda';
-import { Coordinate, FibGrid } from '../src/grid';
-import { setCellValue } from '../src/grid/utilities';
+import { Coordinate, FibGrid } from '@/grid';
+import { setCellValue } from '@/grid/utilities';
 
 describe(FibGrid, () => {
   describe('#new', () => {

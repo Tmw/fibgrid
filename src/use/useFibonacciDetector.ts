@@ -1,5 +1,5 @@
-import { horizontalDetector } from '../detector';
-import { Grid, Coordinate } from '../grid';
+import { horizontalDetector } from '@/detector';
+import { Grid, Coordinate } from '@/grid';
 
 // Detect fibonacci sequences in the given grid and trigger
 // the callback once the given threshold is reached

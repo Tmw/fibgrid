@@ -1,5 +1,5 @@
-import { FibGrid } from '../../src/grid';
-import { horizontalDetector } from '../../src/detector';
+import { FibGrid } from '@/grid';
+import { horizontalDetector } from '@/detector';
 
 describe(horizontalDetector, () => {
   test('detects multiple fibonacci sequences across multiple rows', () => {

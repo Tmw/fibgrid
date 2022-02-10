@@ -1,6 +1,6 @@
 import { prop } from 'ramda';
 
-import { Cell, Grid, Highlight, FibGrid } from '../src/grid';
+import { Cell, Grid, Highlight, FibGrid } from '@/grid';
 import {
   advanceFromCoordinate,
   highlightMutation,

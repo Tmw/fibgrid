@@ -1,4 +1,4 @@
-import { isFibonacciNumber, fibonacciIndex } from '../src/fibonacci';
+import { isFibonacciNumber, fibonacciIndex } from '@/fibonacci';
 
 describe(isFibonacciNumber, () => {
   test('identifies fibonacci numbers correctly', () => {

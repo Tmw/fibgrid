@@ -9,8 +9,8 @@ import {
   lte,
 } from 'ramda';
 
-import { fibonacciIndex } from '../fibonacci';
-import { Cell, Coordinate } from '../grid';
+import { fibonacciIndex } from '@/fibonacci';
+import { Cell, Coordinate } from '@/grid';
 
 type FibonacciCandidate = {
   cell: Cell;

@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "esnext",
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
     "strict": true,
+    "forceConsistentCasingInFileNames": true
   },
   "files": ["src/index.ts"],
+  "include": ["src/**/*", "test/**/*"]
 }

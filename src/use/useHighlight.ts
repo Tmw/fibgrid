@@ -3,9 +3,9 @@ import {
   highlightFibonacci,
   highlightReset,
   highlightMutation,
-} from '../grid/utilities';
+} from '@/grid/utilities';
 
-import { Grid, Coordinate } from '../grid';
+import { Grid, Coordinate } from '@/grid';
 
 export function useHighlight(grid: Grid) {
   const highlight = {

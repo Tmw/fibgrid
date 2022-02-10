@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
 
-import { useGrid, useFibonacciDetector, useHighlight, useDelay } from './use';
-import { Coordinate } from './grid/grid';
-import { nullifyCell } from './grid/utilities';
+import { useGrid, useFibonacciDetector, useHighlight, useDelay } from '@/use';
+import { Coordinate } from '@/grid/grid';
+import { nullifyCell } from '@/grid/utilities';
 
 const GRID_SIZE = 50;
 const App = createApp({

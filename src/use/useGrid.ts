@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
-import { Grid, FibGrid, Coordinate } from '../grid';
-import { advanceFromCoordinate } from '../grid/utilities';
+import { Grid, FibGrid, Coordinate } from '@/grid';
+import { advanceFromCoordinate } from '@/grid/utilities';
 
 // wrapper around the FibGrid class. Exposes a reactive
 // handle to the grid itself and an advance function to advance orthogonals

@@ -1,5 +1,5 @@
-import { Cell } from '../../src/grid';
-import { defaultDetector } from '../../src/detector/detector';
+import { Cell } from '@/grid';
+import { defaultDetector } from '@/detector/detector';
 
 const cellify = (values: number[]): Cell[] =>
   values.map<Cell>((value, x) => ({
