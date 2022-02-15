@@ -5,6 +5,7 @@
       "@/*": ["src/*"]
     },
     "noImplicitAny": true,
+    "esModuleInterop": true,
     "module": "esnext",
     "target": "es5",
     "allowJs": true,

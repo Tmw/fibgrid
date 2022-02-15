@@ -69,5 +69,3 @@ export const detector =
 
     return fibonacciCoordinates.map((c) => c.cell.coordinate);
   };
-
-export const defaultDetector = (candidates: Cell[]) => detector(5)(candidates);

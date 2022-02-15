@@ -1,4 +1,4 @@
-import { horizontalDetector } from '@/detector';
+import { horizontalAndVerticalDetector } from '@/detector';
 import { Grid, Coordinate } from '@/grid';
 
 // Detect fibonacci sequences in the given grid and trigger
@@ -9,7 +9,7 @@ export function useFibonacciDetector(
   cb: FibonacciDetectorCallback
 ) {
   const runDetector = () => {
-    const fibonacciCells = horizontalDetector(grid);
+    const fibonacciCells = horizontalAndVerticalDetector(grid);
     if (fibonacciCells.length > 0) {
       cb(fibonacciCells);
     }

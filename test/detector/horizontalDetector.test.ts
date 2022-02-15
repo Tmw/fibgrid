@@ -36,6 +36,6 @@ describe(horizontalDetector, () => {
     ];
 
     // the found sequence should be the top row
-    expect(horizontalDetector(grid)).toStrictEqual(expected);
+    expect(horizontalDetector(grid, 5)).toStrictEqual(expected);
   });
 });
