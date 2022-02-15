@@ -9,7 +9,7 @@ export function useFibonacciDetector(
   cb: FibonacciDetectorCallback
 ) {
   const runDetector = () => {
-    const fibonacciCells = horizontalAndVerticalDetector(grid);
+    const fibonacciCells = horizontalAndVerticalDetector(grid, 5);
     if (fibonacciCells.length > 0) {
       cb(fibonacciCells);
     }
