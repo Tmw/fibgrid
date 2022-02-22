@@ -16,9 +16,9 @@ export const setCellHighlight = (highlight: Highlight) => (cell: Cell) => ({
   highlight: highlight,
 });
 
-export const highlightMutation = setCellHighlight('mutation');
-export const highlightReset = setCellHighlight('none');
-export const highlightFibonacci = setCellHighlight('fibonacci');
+export const highlightMutation = setCellHighlight(Highlight.MUTATION);
+export const highlightReset = setCellHighlight(Highlight.NONE);
+export const highlightFibonacci = setCellHighlight(Highlight.FIBONACCI);
 
 export const advanceFromCoordinate = (grid: Grid, origin: Coordinate) => {
   const connected = grid.orthogonallyConnected(origin);

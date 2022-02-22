@@ -1,5 +1,10 @@
 type Value = number;
-type Highlight = 'none' | 'mutation' | 'fibonacci';
+// type Highlight = 'none' | 'mutation' | 'fibonacci';
+enum Highlight {
+  NONE = 'none',
+  MUTATION = 'mutation',
+  FIBONACCI = 'fibonacci',
+}
 
 type Coordinate = {
   x: number;
@@ -76,7 +81,7 @@ class FibGrid implements Grid {
       .map((value, index) => ({
         coordinate: this.indexToCoordinate(index),
         value: initialValues ? initialValues[index] : value,
-        highlight: 'none',
+        highlight: Highlight.NONE,
       }));
   }
 

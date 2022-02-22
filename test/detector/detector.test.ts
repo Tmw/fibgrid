@@ -1,4 +1,4 @@
-import { Cell } from '@/grid';
+import { Cell, Highlight } from '@/grid';
 import { detector } from '@/detector/detector';
 
 const fiveDetector = detector(5);
@@ -6,7 +6,7 @@ const cellify = (values: number[]): Cell[] =>
   values.map<Cell>((value, x) => ({
     value,
     coordinate: { y: 0, x },
-    highlight: 'none',
+    highlight: Highlight.NONE,
   }));
 
 describe(detector, () => {

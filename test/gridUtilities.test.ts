@@ -36,17 +36,17 @@ describe('updating cell highlights', () => {
   });
 
   test('mutation highlight', () => {
-    const cell = makeCell('none');
+    const cell = makeCell(Highlight.NONE);
     expect(highlightMutation(cell)).toHaveProperty('highlight', 'mutation');
   });
 
   test('fibonacci highlight', () => {
-    const cell = makeCell('none');
+    const cell = makeCell(Highlight.NONE);
     expect(highlightFibonacci(cell)).toHaveProperty('highlight', 'fibonacci');
   });
 
   test('reset highlight', () => {
-    const cell = makeCell('fibonacci');
+    const cell = makeCell(Highlight.FIBONACCI);
     expect(highlightReset(cell)).toHaveProperty('highlight', 'none');
   });
 });
