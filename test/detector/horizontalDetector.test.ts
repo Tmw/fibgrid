@@ -1,7 +1,7 @@
 import { FibGrid } from '@/grid';
 import { horizontalDetector } from '@/detector';
 
-describe(horizontalDetector, () => {
+describe('horizontalDetector', () => {
   test('detects multiple fibonacci sequences across multiple rows', () => {
     // prettier-ignore
     const initialValues = [

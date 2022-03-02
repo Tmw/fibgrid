@@ -1,5 +1,4 @@
 type Value = number;
-// type Highlight = 'none' | 'mutation' | 'fibonacci';
 enum Highlight {
   NONE = 'none',
   MUTATION = 'mutation',
