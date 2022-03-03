@@ -5,7 +5,7 @@ on:
 
 jobs:
   check:
-    name: check and build
+    name: Lint and test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,3 +18,17 @@ jobs:
 
       - name: Testing
         run: npm run test
+
+      - name: Build
+        run: npm run build:prod
+
+      - name: Prepare for deploy
+        run: |
+          cp public/index.html dist/index.html
+          cp public/style.css dist/style.css
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
